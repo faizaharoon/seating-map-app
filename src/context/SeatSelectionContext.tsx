@@ -5,7 +5,7 @@ import { MAX_SEATS_ALLOWED } from '../globals';
 type State = { selected: string[] };
 type Action =
   | { type: 'toggle'; seatId: string }
-  | { type: 'reset'; seatId: string[] };
+  | { type: 'reset'; seatId: string  };
 
 const SeatContext = createContext<{
   selected: string[];

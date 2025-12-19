@@ -1,33 +1,36 @@
 import React, { useState } from 'react';
 import Seat, { SeatProps } from './Seat';
-import venueData from '../../public/venue.json';
+// import venueData from '../../public/venue.json';
 
-interface SelectedSeat {
-  id: string;
-  sectionId: string;
-  row: number;
-  col: number;
-  priceTier: number;
-  status: string;
+interface SeatMapProps {
+  venueData: {
+    map: {
+      width: number;
+      height: number;
+    };
+    sections: Array<{
+      id: string;
+      transform?: {
+        x?: number;
+        y?: number;
+        scale?: number;
+      };
+      rows: Array<{
+        index: number;
+        seats: Array<{
+          id: string;
+          x: number;
+          y: number;
+          col: number;
+          priceTier: number;
+          status: 'available' | 'reserved' | 'sold' | 'held';
+        }>;
+      }>;
+    }>;
+  };
 }
 
-const SeatMap: React.FC = () => {
-  const [selectedSeats, setSelectedSeats] = useState<SeatProps[]>([]);
-
-  const handleSelect = (seat: SeatProps) => {
-    setSelectedSeats((prev) => {
-      const exists = prev.find((s) => s.id === seat.id);
-
-      if (exists) {
-        // Deselect if already selected
-        return prev.filter((s) => s.id !== seat.id);
-      } else {
-        // Max 8 seats
-        if (prev.length >= 8) return prev;
-        return [...prev, seat];
-      }
-    });
-  };
+const SeatMap: React.FC<SeatMapProps> = ({venueData}) => {
 
   return (
     <div
@@ -36,10 +39,11 @@ const SeatMap: React.FC = () => {
         width: venueData.map.width,
         height: venueData.map.height,
         border: '1px solid #ccc',
+        overflow: 'auto' 
       }}
     >
       {venueData.sections.map((section) =>
-        section.rows.map((row, rIndex) =>
+        section.rows.map((row) =>
           row.seats.map((seat) => {
             // Apply section transform
             const transformedX =
