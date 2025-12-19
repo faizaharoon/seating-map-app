@@ -8,7 +8,7 @@ const App: React.FC = () => {
   return (
     <SeatSelectionProvider>
       <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', padding: '1rem' }}>
-        <h1>Metropolis Arena Seating</h1>
+        <h1>Log Horizon Arena</h1>
         <SeatLegend/>
         <SelectionSummary />
         <SeatMap />
